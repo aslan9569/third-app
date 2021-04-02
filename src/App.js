@@ -1,70 +1,53 @@
-import React from 'react';
-import {useState} from "react";
+import React, {useState} from 'react';
 
-function App(props) {
-    const [text, setText] = useState('')
-
-    const [todos, setTodos] = useState([
+function App() {
+    const [todo, setTodo] = useState([
         {
-            text: 'первое дело',
-            done: true
-        },
-        {
-            text: 'не твое дело',
-            done: false
-        },
-        {
-            text: 'третье дело',
-            done: false
+            text: 'Todos',
         }
     ])
-
+    const [text, setText] = useState("");
+    const [check, setCheck] = useState( false)
+    const textOnchange = (e) => {
+        setText(
+            e.target.value
+        )
+    }
     const handleAdd = () => {
-        setTodos([
-            {
-                text: text
-            },
-            ...todos
-        ])
+        setTodo(
+            [
+                ...todo,
+                {
+                    text: text,
+                    done: check
+                }
+            ]
+        )
     }
-
-    const handleChange = (event) => {
-        setText(event.target.value)
+    const checkOnClick = (e) => {
+        setCheck(
+            e.target.checked
+        )
     }
-
-    const [check, setCheck] = useState("")
-    const checkClick = (event) => {
-        setCheck(event.target.checked)
-    }
-
-
-
-
-    // const handleDo = (event) => {
-    //     setCheck(event.target.value)
-    // }
-
-
     return (
         <div>
-            <div>
-                <input type="text" value={text} onChange={handleChange}/>
-                <button onClick={handleAdd}>
-                    add
-                </button>
-                <input type="checkbox" checked={check} onChange={checkClick} />
-
+            <div className='header'>
+                <input type="text" className='textInput' onChange={textOnchange}/>
+                <button className='button' onClick={handleAdd}>add</button>
+                <input type="checkbox"  checked={check.done} className='box' onChange={checkOnClick}/>
             </div>
-            <ul>
-                {todos.map((item) => {
-                    return (
-                        <li>
-                            <input type="checkbox" checked={item.done} />
-                            {item.text}
-                        </li>
+            {
+                todo.map(item => {
+                    return(
+                        <div>
+                            <div className='todo'>
+                                <input type="checkbox" checked={item.done} />
+                                {item.text}
+                            </div>
+                        </div>
                     )
-                })}
-            </ul>
+                })
+            }
         </div>
     );
 }
